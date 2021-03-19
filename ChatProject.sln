@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31105.61
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrontApplication", "FrontApplication\FrontApplication.csproj", "{5BC2935D-9892-4261-9582-936034F347B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrontApplication", "FrontApplication\FrontApplication.csproj", "{5BC2935D-9892-4261-9582-936034F347B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiService", "ApiService\ApiService.csproj", "{E4FF1A7B-F561-40EC-BE44-EB72D99BF135}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiService", "ApiService\ApiService.csproj", "{E4FF1A7B-F561-40EC-BE44-EB72D99BF135}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
