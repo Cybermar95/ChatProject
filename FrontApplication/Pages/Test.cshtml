@@ -1,0 +1,11 @@
+﻿@page
+@model FrontApplication.Pages.TestModel
+@{
+}
+
+@Html.TextAreaFor(model => model.Message, new { @class = "required", @cols = 150, @rows = 20, @readonly = "readonly" })
+
+<form method="post">
+    <input type="text" name="msg" />
+    <input type="submit" value="Send" />
+</form>
