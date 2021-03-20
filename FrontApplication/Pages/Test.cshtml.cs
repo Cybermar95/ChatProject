@@ -5,25 +5,29 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
+
 namespace FrontApplication.Pages
 {
     public class TestModel : PageModel
     {
+       
         private DemoServerStorage _storage = DemoServerStorage.GetServerStorage(); //singletone call
 
         public string Message { get; set; }
 
         public void OnGet()
         {
-            _storage.AddMessage($"[{DateTime.Now}]: Chat Started!");
         }
 
-        public void OnPost(string msg)
+        public void OnPost(string msg, string chatName)
         {
-            _storage.AddMessage(msg);
+            _storage.AddMessage($"[{DateTime.Now}] {chatName}: {msg}\n");
             Message = _storage.GetMessages();
-            //OneMoreMessage += msg;
-            //Message = OneMoreMessage;
+        }
+
+        public string SendLastMessage(string lastMessageID)
+        {
+            return DateTime.Now.ToString();
         }
     }
 }
