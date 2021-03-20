@@ -3,37 +3,48 @@
 @{
 }
 
-<head><meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"></head>
-
 @Html.TextAreaFor(model => model.Message, new { @cols = 150, @rows = 20, @readonly = "readonly", @id = "ChatArea" });
 
-
+<textarea cols="150" rows="20" readonly="readonly" id="ChatArea"></textarea>
 
 <script>
     //chat box is always on bottom
     var textarea = document.getElementById("ChatArea");
-   
+
+
+    function SendMessage()
+    {
+        var User = document.getElementById("User").value;
+        var UserMessage = document.getElementById("UserMessage").value;
+
+        var postMsg = { UserName: User, Text: UserMessage };
+        var stringPostMsg = JSON.stringify(postMsg);
+        $.post("http://462495-co47915.tmweb.ru:8082/API/Message", stringPostMsg);
+    }
 
     //asking server each 500 ms to update other messages in chat
-    //var CurrentMessageCount;
-
-    function GetServerMessage() {
-        $.get("http://462495-co47915.tmweb.ru:8081/API/Message", ServerResponse);
+    function GetServerMessage()
+    {
+        $.get("http://462495-co47915.tmweb.ru:8082/API/Message", ServerResponse);
     }
-    setInterval(GetServerMessage, 500);
+    setInterval(GetServerMessage, 5000);
 
-    function ServerResponse(result, responseStatus) {
-        for (var i = 0; i < result.messages.length; i++)
+    //test function to reflect sevrer messages in chat window
+    function ServerResponse(result, responseStatus)
+    {
+        var messages = result.messages;
+        for (var i = 0; i < messages.length; i++)
         {
-            document.getElementById("ChatArea").innerHTML += result.messages[i].text + '\n';
+            textarea.innerHTML += messages[i].text + '\n';
         }
         textarea.scrollTop = textarea.scrollHeight;
     }
 
+   
+
 </script>
 
-<form method="post">
-    <input type="text" name="chatName" />
-    <input type="text" name="msg" />
-    <input type="submit" value="Send" />
-</form>
+<input type="button" value="Send" onclick="SendMessage()">
+<input type="text" name="UserName" id="User"/>
+<input type="text" name="msg" id="UserMessage"/>
+

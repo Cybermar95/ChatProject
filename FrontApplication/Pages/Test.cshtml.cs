@@ -19,10 +19,10 @@ namespace FrontApplication.Pages
         {
         }
 
-        public void OnPost(string msg, string chatName)
+        public void OnPost(string msg, string UserName)
         {
-            _storage.AddMessage($"[{DateTime.Now}] {chatName}: {msg}\n");
-            Message = _storage.GetMessages();
+           //_storage.AddMessage($"[{DateTime.Now}] {chatName}: {msg}\n");
+           //Message = _storage.GetMessages();
         }
 
         public string SendLastMessage(string lastMessageID)
