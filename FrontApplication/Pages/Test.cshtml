@@ -3,9 +3,37 @@
 @{
 }
 
-@Html.TextAreaFor(model => model.Message, new { @class = "required", @cols = 150, @rows = 20, @readonly = "readonly" })
+<head><meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"></head>
+
+@Html.TextAreaFor(model => model.Message, new { @cols = 150, @rows = 20, @readonly = "readonly", @id = "ChatArea" });
+
+
+
+<script>
+    //chat box is always on bottom
+    var textarea = document.getElementById("ChatArea");
+   
+
+    //asking server each 500 ms to update other messages in chat
+    //var CurrentMessageCount;
+
+    function GetServerMessage() {
+        $.get("http://462495-co47915.tmweb.ru:8081/API/Message", ServerResponse);
+    }
+    setInterval(GetServerMessage, 500);
+
+    function ServerResponse(result, responseStatus) {
+        for (var i = 0; i < result.messages.length; i++)
+        {
+            document.getElementById("ChatArea").innerHTML += result.messages[i].text + '\n';
+        }
+        textarea.scrollTop = textarea.scrollHeight;
+    }
+
+</script>
 
 <form method="post">
+    <input type="text" name="chatName" />
     <input type="text" name="msg" />
     <input type="submit" value="Send" />
 </form>
