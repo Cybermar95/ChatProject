@@ -13,14 +13,15 @@ namespace ApiService.Controllers
     {
         private MessageRepository _messageRepository = MessageRepository.GetMessageRepository();
 
-        [HttpGet]
-        public MessageRepository Get() => _messageRepository;
+        [HttpGet ("{id}")]
+        public IEnumerable<Message> Get(int id) => _messageRepository.GetMessage(id);
 
         [HttpPost]
-        public void Post([FromBody] Message msg)
+        public Message Post([FromBody] Message message)
         {
-            msg.Date = DateTime.Now.ToString();
-            _messageRepository.AddMessage(msg);
+            message.ID = _messageRepository.GetNewId();
+            _messageRepository.AddMessage(message);
+            return message;
         }
     }
 }
