@@ -30,7 +30,7 @@
         var msgObject = { UserName: $("#User")[0].value, Text: $("#UserMessage")[0].value }
 
         $.ajax({
-            url: "https://localhost:2000/API/Message",
+            url: "http://462495-co47915.tmweb.ru:8090/API/Message",
             type: "post",
             contentType: "application/json",
             data: JSON.stringify(msgObject),
@@ -45,7 +45,7 @@
 
     //asking server each 500 ms to update other messages in chat
     function GetServerMessage() {
-        $.get("https://localhost:2000/API/Message" + "/" + document.LastMsgID, ServerResponse);
+        $.get("http://462495-co47915.tmweb.ru:8090/API/Message" + "/" + document.LastMsgID, ServerResponse);
     }
     setInterval(GetServerMessage, 100);
 
@@ -67,7 +67,6 @@
             container.scrollTop = container.scrollHeight;
         }
     }
-
 </script>
 
 
