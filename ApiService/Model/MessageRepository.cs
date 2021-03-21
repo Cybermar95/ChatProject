@@ -24,10 +24,13 @@ namespace ApiService.Model
 
         #endregion
 
-        public List<Message> Messages => _messages;
+
 
         private readonly List<Message> _messages = new();
 
-        public void AddMessage(Message message) => _messages.Add(message); 
+        public void AddMessage(Message message) => _messages.Add(message);
+        public IEnumerable<Message> GetMessage(int MsgId) => _messages.Where(msg => msg.ID > MsgId);
+
+        public int GetNewId() => _messages.Count;
     }
 }

@@ -3,48 +3,84 @@
 @{
 }
 
-@Html.TextAreaFor(model => model.Message, new { @cols = 150, @rows = 20, @readonly = "readonly", @id = "ChatArea" });
+<style>
+    .MsgStyle {
+        width: 325px;
+        height: 140px;
+        background: #10b7ec;
+        border-radius: 5px;
+        float: left;
+        margin: 20px;
+        color: #fff;
+        padding: 25px;
+        box-sizing: border-box;
+        font-family: monospace;
+        font-size: 13px;
+        box-shadow: 5px 5px 7px rgba(0,0,0,0.5);
+    }
+</style>
 
-<textarea cols="150" rows="20" readonly="readonly" id="ChatArea"></textarea>
 
 <script>
-    //chat box is always on bottom
-    var textarea = document.getElementById("ChatArea");
 
+    document.Container = document.getElementById("Container");
+    document.LastMsgID = 0;
 
-    function SendMessage()
-    {
-        var User = document.getElementById("User").value;
-        var UserMessage = document.getElementById("UserMessage").value;
+    function SendMessage() {
+        var msgObject = { UserName: $("#User")[0].value, Text: $("#UserMessage")[0].value }
 
-        var postMsg = { UserName: User, Text: UserMessage };
-        var stringPostMsg = JSON.stringify(postMsg);
-        $.post("http://462495-co47915.tmweb.ru:8082/API/Message", stringPostMsg);
+        $.ajax({
+            url: "https://localhost:2000/API/Message",
+            type: "post",
+            contentType: "application/json",
+            data: JSON.stringify(msgObject),
+            success: function (result, status, xhr) {
+
+            },
+            error: function (xhr, status, error) {
+
+            }
+        });
     }
 
     //asking server each 500 ms to update other messages in chat
-    function GetServerMessage()
-    {
-        $.get("http://462495-co47915.tmweb.ru:8082/API/Message", ServerResponse);
+    function GetServerMessage() {
+        $.get("https://localhost:2000/API/Message" + "/" + document.LastMsgID, ServerResponse);
     }
-    setInterval(GetServerMessage, 5000);
+    setInterval(GetServerMessage, 100);
 
     //test function to reflect sevrer messages in chat window
-    function ServerResponse(result, responseStatus)
-    {
-        var messages = result.messages;
-        for (var i = 0; i < messages.length; i++)
-        {
-            textarea.innerHTML += messages[i].text + '\n';
-        }
-        textarea.scrollTop = textarea.scrollHeight;
-    }
+    function ServerResponse(result, responseStatus) {
+        var container = document.getElementById("Container");
 
-   
+
+        for (var i = 0; i < result.length; i++) {
+            var newMsgDiv = document.createElement('div');
+            newMsgDiv.className = 'MsgStyle';
+            newMsgDiv.innerHTML = result[i].userName + ": " + result[i].text;
+            container.append(newMsgDiv);
+        }
+
+
+        if (result.length > 0) {
+            document.LastMsgID = result[result.length - 1].id;
+            container.scrollTop = container.scrollHeight;
+        }
+    }
 
 </script>
 
-<input type="button" value="Send" onclick="SendMessage()">
-<input type="text" name="UserName" id="User"/>
-<input type="text" name="msg" id="UserMessage"/>
 
+<body>
+
+    <div>
+        <input type="button" value="Send" onclick="SendMessage()" />
+        <input type="text" name="UserName" id="User" />
+        <input type="text" name="msg" id="UserMessage" />
+    </div>
+
+
+    <div id="Container" ; style="overflow-y:scroll; height:800px; width:440px; background:gray; " />
+
+
+</body>
