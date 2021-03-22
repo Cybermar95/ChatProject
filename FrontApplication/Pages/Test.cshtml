@@ -5,9 +5,9 @@
 
 <style>
     .MsgStyle {
-        width: 325px;
-        height: 140px;
-        background: #10b7ec;
+        width: 1125px;
+        height: auto;
+        background: #544a54;
         border-radius: 5px;
         float: left;
         margin: 20px;
@@ -15,8 +15,85 @@
         padding: 25px;
         box-sizing: border-box;
         font-family: monospace;
-        font-size: 13px;
+        font-size: 14px;
         box-shadow: 5px 5px 7px rgba(0,0,0,0.5);
+        position: center;
+    }
+
+    .FullChatArea{
+        margin:auto;
+    }
+
+    .UserMessage {
+        width: 1125px;
+        margin-left: 20px;
+        border-radius: 10px;
+        border: 2.5px solid #312a31;
+        font-family: monospace;
+        font-size: 15px;
+        position: center;
+        resize: none;
+        background: #473f47;
+        color: #fff;
+        padding: 10px;
+    }
+        .UserMessage:focus {
+            outline: none;
+            border: 2.5px solid #ffeeff;
+            color: #fff;
+        }
+
+    .SendButton {
+        border-radius: 6px;
+        border: 1.5px solid #312a31;
+        font-family: monospace;
+        font-size: 15px;
+        background: #544a54;
+        color: #fff;
+        position: relative;
+        margin-left: 20px;
+        left: 1035px;
+        width: 90px;
+        height: 30px;
+    }
+        .SendButton:focus {
+            outline: none;
+            border: 1.5px solid #ffeeff;
+            color: #fff;
+        }
+
+    input[type=text] {
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        margin-left: 20px;
+        margin-top: 5px;
+        border-radius: 10px;
+        border: 2.5px solid #312a31;
+        color: #fff;
+        width: 250px;
+        height: 30px;
+        background: #473f47;
+        font-family: monospace;
+        font-size: 15px;
+        padding: 10px;
+    }
+
+        input[type=text]:focus {
+            outline: none;
+            border: 2.5px solid #ffeeff;
+            color: #fff;
+        }
+
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+    ::-webkit-scrollbar {
+        width: 0px;
+    }
+
+    ::placeholder {
+        color: white;
     }
 </style>
 
@@ -41,6 +118,9 @@
 
             }
         });
+
+        var MessageBox = document.getElementById("UserMessage");
+        MessageBox.value= "";
     }
 
     //asking server each 500 ms to update other messages in chat
@@ -71,15 +151,21 @@
 
 
 <body>
+    <p></p>
+    <p></p>
+    <p></p>
 
-    <div>
-        <input type="button" value="Send" onclick="SendMessage()" />
-        <input type="text" name="UserName" id="User" />
-        <input type="text" name="msg" id="UserMessage" />
+    <div id="Container" ; style="overflow:auto; height:650px; width:1200px;"></div>
+
+    <div class="FullChatArea">
+        <p></p>
+        <input type="text" name="UserName" id="User" class="UserName" />
+        <p></p>
+        <textarea placeholder="Write a message..." name="msg" id="UserMessage" class="UserMessage"> </textarea>
+        <p></p>
+        <input type="button" value="Send" onclick="SendMessage()" class="SendButton" />
     </div>
-
-
-    <div id="Container" ; style="overflow-y:scroll; height:800px; width:440px; background:gray; " />
-
-
+    
 </body>
+
+
