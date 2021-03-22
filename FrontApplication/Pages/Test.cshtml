@@ -14,7 +14,7 @@
         <p></p>
         <input type="text" name="UserName" id="User" class="UserName" />
         <p></p>
-        <textarea placeholder="Write a message..." name="msg" id="UserMessage" class="UserMessage"> </textarea>
+        <textarea placeholder="Write a message..." name="msg" id="UserMessage" class="UserMessage" > </textarea>
         <p></p>
         <input type="button" value="Send" onclick="SendMessage()" class="SendButton" />
     </div>
@@ -26,7 +26,7 @@
     .MsgStyle {
         width: 1125px;
         height: auto;
-        background: #544a54;
+        background: #2c2f33;
         border-radius: 5px;
         float: left;
         margin: 20px;
@@ -49,12 +49,12 @@
         width: 1125px;
         margin-left: 20px;
         border-radius: 10px;
-        border: 2.5px solid #312a31;
+        border: 2.5px solid #99AAB5;
         font-family: monospace;
         font-size: 15px;
         position: center;
         resize: none;
-        background: #473f47;
+        background: #2c2f33;
         color: #fff;
         padding: 10px;
     }
@@ -66,10 +66,10 @@
 
     .SendButton {
         border-radius: 6px;
-        border: 1.5px solid #312a31;
+        border: 1.5px solid #99AAB5;
         font-family: monospace;
         font-size: 15px;
-        background: #544a54;
+        background: #2c2f33;
         color: #fff;
         position: relative;
         margin-left: 20px;
@@ -89,11 +89,11 @@
         margin-left: 20px;
         margin-top: 5px;
         border-radius: 10px;
-        border: 2.5px solid #312a31;
+        border: 2.5px solid #99AAB5;
         color: #fff;
         width: 250px;
         height: 30px;
-        background: #473f47;
+        background: #2c2f33;
         font-family: monospace;
         font-size: 15px;
         padding: 10px;
@@ -107,11 +107,9 @@
 
     ::-webkit-scrollbar {
         display: none;
-    }
-
-    ::-webkit-scrollbar {
         width: 0px;
     }
+
 
     ::placeholder {
         color: white;
@@ -131,7 +129,11 @@
     document.Container = document.getElementById("Container");
 
     function SendMessage() {
-        var msgObject = { UserName: $("#User")[0].value, Text: $("#UserMessage")[0].value }
+
+        var msgObject = { UserName: $("#User")[0].value, Text: $("#UserMessage")[0].value.split('\n').join('<br>') }
+
+        if (msgObject.UserName ==="" || msgObject.Text ==="")
+            return;
 
         $.ajax({
             url: "http://462495-co47915.tmweb.ru:8090/API/Message",
@@ -207,6 +209,14 @@
         console.log(walk);
     });
 
+    document.MessageBox = document.getElementById("UserMessage");
+
+    document.MessageBox.addEventListener('keypress', (e) => {
+        if (e.code === 'Enter' && e.ctrlKey) {
+            SendMessage();
+        }
+    });
+    
 </script>
 
 
