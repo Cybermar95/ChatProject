@@ -3,6 +3,25 @@
 @{
 }
 
+<body>
+    <p></p>
+    <p></p>
+    <p></p>
+
+    <div id="Container" class="Container" ; style="overflow:scroll; height:650px; width:1200px;"></div>
+
+    <div class="FullChatArea">
+        <p></p>
+        <input type="text" name="UserName" id="User" class="UserName" />
+        <p></p>
+        <textarea placeholder="Write a message..." name="msg" id="UserMessage" class="UserMessage"> </textarea>
+        <p></p>
+        <input type="button" value="Send" onclick="SendMessage()" class="SendButton" />
+    </div>
+
+</body>
+
+
 <style>
     .MsgStyle {
         width: 1125px;
@@ -18,6 +37,8 @@
         font-size: 14px;
         box-shadow: 5px 5px 7px rgba(0,0,0,0.5);
         position: center;
+        user-select: none;
+        overflow-wrap: break-word;
     }
 
     .FullChatArea{
@@ -95,13 +116,19 @@
     ::placeholder {
         color: white;
     }
-</style>
 
+    .Container.active {
+        cursor: grabbing;
+        cursor: -webkit-grabbing;
+        transform: scale(1);
+    }
+</style>
 
 <script>
 
-    document.Container = document.getElementById("Container");
+
     document.LastMsgID = 0;
+    document.Container = document.getElementById("Container");
 
     function SendMessage() {
         var msgObject = { UserName: $("#User")[0].value, Text: $("#UserMessage")[0].value }
@@ -120,14 +147,14 @@
         });
 
         var MessageBox = document.getElementById("UserMessage");
-        MessageBox.value= "";
+        MessageBox.value = "";
     }
 
     //asking server each 500 ms to update other messages in chat
     function GetServerMessage() {
         $.get("http://462495-co47915.tmweb.ru:8090/API/Message" + "/" + document.LastMsgID, ServerResponse);
     }
-    setInterval(GetServerMessage, 100);
+    setInterval(GetServerMessage, 500);
 
     //test function to reflect sevrer messages in chat window
     function ServerResponse(result, responseStatus) {
@@ -147,25 +174,42 @@
             container.scrollTop = container.scrollHeight;
         }
     }
+
+
+    //document.Slider = document.getElementById("Container");
+    let isDown = false;
+    let startY;
+    let scrollDown;
+    //var scrollD = document.Container.scrollDown;
+    //var scrollT = document.Container.scrollTop;
+    //var scrollH = document.Container.scrollHeight;
+
+    document.Container.addEventListener('mousedown', (e) => {
+        isDown = true;
+        document.Container.classList.add('active');
+        startY = e.pageY - document.Container.offsetTop;
+        scrollDown = document.Container.scrollTop;
+    });
+    document.Container.addEventListener('mouseleave', () => {
+        isDown = false;
+        document.Container.classList.remove('active');
+    });
+    document.Container.addEventListener('mouseup', () => {
+        isDown = false;
+        document.Container.classList.remove('active');
+    });
+    document.Container.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const y = e.pageY - document.Container.offsetTop;
+        const walk = (y - startY) * 6; //scroll-fast
+        document.Container.scrollTop = scrollDown - walk;
+        console.log(walk);
+    });
+
 </script>
 
 
-<body>
-    <p></p>
-    <p></p>
-    <p></p>
 
-    <div id="Container" ; style="overflow:auto; height:650px; width:1200px;"></div>
-
-    <div class="FullChatArea">
-        <p></p>
-        <input type="text" name="UserName" id="User" class="UserName" />
-        <p></p>
-        <textarea placeholder="Write a message..." name="msg" id="UserMessage" class="UserMessage"> </textarea>
-        <p></p>
-        <input type="button" value="Send" onclick="SendMessage()" class="SendButton" />
-    </div>
-    
-</body>
 
 
