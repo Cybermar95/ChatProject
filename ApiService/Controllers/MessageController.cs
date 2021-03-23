@@ -19,6 +19,8 @@ namespace ApiService.Controllers
         [HttpPost]
         public Message Post([FromBody] Message message)
         {
+
+            HttpContext
             message.ID = _messageRepository.GetNewId();
             _messageRepository.AddMessage(message);
             return message;

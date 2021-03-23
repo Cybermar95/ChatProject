@@ -1,72 +1,114 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-    /* Margin bottom by footer height */
-    margin-bottom: 60px;
+﻿html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
     background-color: #23272a;
 }
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+
+.MsgContainer {
+    overflow: scroll;
+    height: 80vh;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+    .MsgContainer.active {
+        cursor: grabbing;
+        transform: scale(0.95);
+    }
+
+.InputContainer {
+    height: 20vh;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.MsgStyle {
+    width: 100%;
+    height: auto;
+    background: #2c2f33;
+    border-radius: 5px;
+    float: left;
+    margin-bottom: 20px;
+    color: #fff;
+    padding: 25px;
+    box-sizing: border-box;
+    font-family: monospace;
+    font-size: 14px;
+    box-shadow: 5px 5px 7px rgb(0 0 0 / 50%);
+    position: center;
+    user-select: none;
+    overflow-wrap: break-word;
+}
+
+.UserMessage {
+    width: 1125px;
+    border-radius: 10px;
+    border: 2.5px solid #99AAB5;
+    font-family: monospace;
+    font-size: 15px;
+    position: center;
+    resize: none;
+    background: #2c2f33;
+    color: #fff;
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    height: 75px;
+}
+
+    .UserMessage:focus {
+        outline: none;
+        border: 2.5px solid #ffeeff;
+        color: #fff;
+    }
+
+.SendButton {
+    border-radius: 6px;
+    border: 2.5px solid #99AAB5;
+    font-family: monospace;
+    font-size: 15px;
+    background: #2c2f33;
+    color: #fff;
+    left: 1035px;
+    width: 90px;
+    float: right;
+    height: 30px;
+}
+
+    .SendButton:focus {
+        outline: none;
+        border: 1.5px solid #ffeeff;
+        color: #fff;
+    }
+
+input[type=text] {
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    border: 2.5px solid #99AAB5;
+    color: #fff;
+    width: 250px;
+    height: 16px;
+    background: #2c2f33;
+    font-family: monospace;
+    font-size: 15px;
+    padding: 10px;
+    position: relative;
+    margin-top: 20px;
+}
+
+    input[type=text]:focus {
+        outline: none;
+        border: 2.5px solid #ffeeff;
+        color: #fff;
+    }
+
+::-webkit-scrollbar {
+    display: none;
+    width: 0px;
+}
+
+::placeholder {
+    color: white;
 }
