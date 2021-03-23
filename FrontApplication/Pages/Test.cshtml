@@ -2,221 +2,26 @@
 @model FrontApplication.Pages.TestModel
 @{
 }
+<link rel="stylesheet" href="~/css/site.css" />
+
 
 <body>
-    <p></p>
-    <p></p>
-    <p></p>
+    <div>
+        <div id="Container" class="MsgContainer"></div>
 
-    <div id="Container" class="Container" ; style="overflow:scroll; height:650px; width:1200px;"></div>
-
-    <div class="FullChatArea">
-        <p></p>
-        <input type="text" name="UserName" id="User" class="UserName" />
-        <p></p>
-        <textarea placeholder="Write a message..." name="msg" id="UserMessage" class="UserMessage" > </textarea>
-        <p></p>
-        <input type="button" value="Send" onclick="SendMessage()" class="SendButton" />
+        <div class="InputContainer">
+            <input class="UserName" type="text" name="UserName" id="User" />
+            <textarea class="UserMessage" placeholder="Write a message..." name="msg" id="UserMessage"> </textarea>
+            <input class="SendButton" type="button" value="Send" onclick="SendMessage()" />
+        </div>
     </div>
-
 </body>
 
-
-<style>
-    .MsgStyle {
-        width: 1125px;
-        height: auto;
-        background: #2c2f33;
-        border-radius: 5px;
-        float: left;
-        margin: 20px;
-        color: #fff;
-        padding: 25px;
-        box-sizing: border-box;
-        font-family: monospace;
-        font-size: 14px;
-        box-shadow: 5px 5px 7px rgba(0,0,0,0.5);
-        position: center;
-        user-select: none;
-        overflow-wrap: break-word;
-    }
-
-    .FullChatArea{
-        margin:auto;
-    }
-
-    .UserMessage {
-        width: 1125px;
-        margin-left: 20px;
-        border-radius: 10px;
-        border: 2.5px solid #99AAB5;
-        font-family: monospace;
-        font-size: 15px;
-        position: center;
-        resize: none;
-        background: #2c2f33;
-        color: #fff;
-        padding: 10px;
-    }
-        .UserMessage:focus {
-            outline: none;
-            border: 2.5px solid #ffeeff;
-            color: #fff;
-        }
-
-    .SendButton {
-        border-radius: 6px;
-        border: 1.5px solid #99AAB5;
-        font-family: monospace;
-        font-size: 15px;
-        background: #2c2f33;
-        color: #fff;
-        position: relative;
-        margin-left: 20px;
-        left: 1035px;
-        width: 90px;
-        height: 30px;
-    }
-        .SendButton:focus {
-            outline: none;
-            border: 1.5px solid #ffeeff;
-            color: #fff;
-        }
-
-    input[type=text] {
-        -webkit-border-radius: 10px;
-        -moz-border-radius: 10px;
-        margin-left: 20px;
-        margin-top: 5px;
-        border-radius: 10px;
-        border: 2.5px solid #99AAB5;
-        color: #fff;
-        width: 250px;
-        height: 30px;
-        background: #2c2f33;
-        font-family: monospace;
-        font-size: 15px;
-        padding: 10px;
-    }
-
-        input[type=text]:focus {
-            outline: none;
-            border: 2.5px solid #ffeeff;
-            color: #fff;
-        }
-
-    ::-webkit-scrollbar {
-        display: none;
-        width: 0px;
-    }
-
-
-    ::placeholder {
-        color: white;
-    }
-
-    .Container.active {
-        cursor: grabbing;
-        cursor: -webkit-grabbing;
-        transform: scale(1);
-    }
-</style>
+<script src="~/js/site.js" asp-append-version="true"></script>
 
 <script>
+  
 
-
-    document.LastMsgID = 0;
-    document.Container = document.getElementById("Container");
-
-    function SendMessage() {
-
-        var msgObject = { UserName: $("#User")[0].value, Text: $("#UserMessage")[0].value.split('\n').join('<br>') }
-
-        if (msgObject.UserName ==="" || msgObject.Text ==="")
-            return;
-
-        $.ajax({
-            url: "http://462495-co47915.tmweb.ru:8090/API/Message",
-            type: "post",
-            contentType: "application/json",
-            data: JSON.stringify(msgObject),
-            success: function (result, status, xhr) {
-
-            },
-            error: function (xhr, status, error) {
-
-            }
-        });
-
-        var MessageBox = document.getElementById("UserMessage");
-        MessageBox.value = "";
-    }
-
-    //asking server each 500 ms to update other messages in chat
-    function GetServerMessage() {
-        $.get("http://462495-co47915.tmweb.ru:8090/API/Message" + "/" + document.LastMsgID, ServerResponse);
-    }
-    setInterval(GetServerMessage, 500);
-
-    //test function to reflect sevrer messages in chat window
-    function ServerResponse(result, responseStatus) {
-        var container = document.getElementById("Container");
-
-
-        for (var i = 0; i < result.length; i++) {
-            var newMsgDiv = document.createElement('div');
-            newMsgDiv.className = 'MsgStyle';
-            newMsgDiv.innerHTML = result[i].userName + ": " + result[i].text;
-            container.append(newMsgDiv);
-        }
-
-
-        if (result.length > 0) {
-            document.LastMsgID = result[result.length - 1].id;
-            container.scrollTop = container.scrollHeight;
-        }
-    }
-
-
-    //document.Slider = document.getElementById("Container");
-    let isDown = false;
-    let startY;
-    let scrollDown;
-    //var scrollD = document.Container.scrollDown;
-    //var scrollT = document.Container.scrollTop;
-    //var scrollH = document.Container.scrollHeight;
-
-    document.Container.addEventListener('mousedown', (e) => {
-        isDown = true;
-        document.Container.classList.add('active');
-        startY = e.pageY - document.Container.offsetTop;
-        scrollDown = document.Container.scrollTop;
-    });
-    document.Container.addEventListener('mouseleave', () => {
-        isDown = false;
-        document.Container.classList.remove('active');
-    });
-    document.Container.addEventListener('mouseup', () => {
-        isDown = false;
-        document.Container.classList.remove('active');
-    });
-    document.Container.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        const y = e.pageY - document.Container.offsetTop;
-        const walk = (y - startY) * 6; //scroll-fast
-        document.Container.scrollTop = scrollDown - walk;
-        console.log(walk);
-    });
-
-    document.MessageBox = document.getElementById("UserMessage");
-
-    document.MessageBox.addEventListener('keypress', (e) => {
-        if (e.code === 'Enter' && e.ctrlKey) {
-            SendMessage();
-        }
-    });
-    
 </script>
 
 
