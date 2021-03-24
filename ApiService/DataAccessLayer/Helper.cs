@@ -13,9 +13,9 @@ namespace ApiService.DataAccessLayer
         public static IServiceCollection AddDB(this IServiceCollection serviceCollection, IConfiguration config)
         {
             var connectionString = config.GetConnectionString("SqLiteConnectionString");
-            var dbContextOptionsBuilder = new DbContextOptionsBuilder().UseSqlite(connectionString).Options;
+            var dbContextOptions = new DbContextOptionsBuilder().UseSqlite(connectionString).Options;
 
-            serviceCollection.AddScoped<IWebApiDBContext>(x=> new WebApiDBContext(dbContextOptionsBuilder));
+            serviceCollection.AddScoped<IWebApiDBContext>(x=> new WebApiDBContext(dbContextOptions));
 
             serviceCollection.AddScoped<IMessageService>(x => new MessageService(x.GetService<IWebApiDBContext>()));
 
