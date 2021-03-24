@@ -7,11 +7,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 namespace ApiService.DataAccessLayer
 {
-    public class WebApiDBContext : DbContext
+    public class WebApiDBContext : DbContext, IWebApiDBContext
     {
         public DbSet<Message> Messages { get; set; }
-        public WebApiDBContext(DbContextOptions<WebApiDBContext> options) : base(options)
+        public WebApiDBContext(DbContextOptions options) : base(options)
         {
         }
+    }
+
+    public interface IWebApiDBContext
+    {
+        DbSet<Message> Messages { get; set; }
+
+        int SaveChanges();
     }
 }

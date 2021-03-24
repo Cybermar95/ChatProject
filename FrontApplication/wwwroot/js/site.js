@@ -11,7 +11,8 @@ function SendMessage() {
         return;
 
     $.ajax({
-        url: "https://localhost:2000/API/Message",
+        // url: "https://localhost:2000/API/Message",
+        url: "http://462495-co47915.tmweb.ru:8070/API/Message",
         type: "post",
         contentType: "application/json",
         data: JSON.stringify(msgObject),
@@ -29,7 +30,8 @@ function SendMessage() {
 
 //asking server each 500 ms to update other messages in chat
 function GetServerMessage() {
-    $.get("https://localhost:2000/API/Message" + "/" + document.LastMsgID, ServerResponse);
+    //$.get("https://localhost:2000/API/Message" + "/" + document.LastMsgID, ServerResponse);
+    $.get("http://462495-co47915.tmweb.ru:8070/API/Message" + "/" + document.LastMsgID, ServerResponse);
 }
 setInterval(GetServerMessage, 500);
 

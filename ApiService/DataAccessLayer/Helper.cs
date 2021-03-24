@@ -1,0 +1,25 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace ApiService.DataAccessLayer
+{
+    public static class Helper
+    {
+        public static IServiceCollection AddDB(this IServiceCollection serviceCollection, IConfiguration config)
+        {
+            var connectionString = config.GetConnectionString("SqLiteConnectionString");
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder().UseSqlite(connectionString).Options;
+
+            serviceCollection.AddScoped<IWebApiDBContext>(x=> new WebApiDBContext(dbContextOptionsBuilder));
+
+            serviceCollection.AddScoped<IMessageService>(x => new MessageService(x.GetService<IWebApiDBContext>()));
+
+            return serviceCollection;
+        }
+    }
+}
