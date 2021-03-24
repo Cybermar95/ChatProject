@@ -4,7 +4,34 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<body>
+    <div class="SingUpBox" id="SingUpBox">
+        <div class="SingUpInput">
+            <label class="SingUpText">UserName:</label>
+            <input class="UserName" type="text" name="UserName" id="User" /><br />
+            <label class="SingUpText">Password:</label>
+            <input class="Password" type="text" name="Password" id="Password" /><br />
+            <input class="SingUpButton" type="button" value="SingUp" />
+        </div>
+    </div>
+</body>
+
+<style>
+    .SingUpInput {
+        display: table;
+        margin: 0 auto;
+        border: 1px solid black;
+    }
+    .SingUpBox {
+        border: 1px solid red;
+        width: 100%
+    }
+    .SingUpText{
+        font-family:monospace;
+        font-size:25px;
+        color:#FFF;
+    }
+    .SingUpButton{
+
+    }
+</style>
