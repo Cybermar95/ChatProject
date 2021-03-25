@@ -1,37 +1,92 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Register";
 }
 
 <body>
-    <div class="SingUpBox" id="SingUpBox">
-        <div class="SingUpInput">
-            <label class="SingUpText">UserName:</label>
-            <input class="UserName" type="text" name="UserName" id="User" /><br />
-            <label class="SingUpText">Password:</label>
+    <div class="SignUpBox" id="SignUpBox">
+        <div class="SignUpInput">
+            <label class="SignUpText">Sign Up</label> <br />
+            <label class="SignUpText">UserName:</label>
+            <input class="UserName" type="text" name="UserName" id="UserName" /><br />
+            <label class="SignUpText">Password:</label>
             <input class="Password" type="text" name="Password" id="Password" /><br />
-            <input class="SingUpButton" type="button" value="SingUp" />
+            <input class="SignUpButton" type="button" value="SignUp" onclick="RequestSignUp()"/>
         </div>
     </div>
 </body>
 
 <style>
-    .SingUpInput {
+    .SignUpInput {
         display: table;
         margin: 0 auto;
         border: 1px solid black;
     }
-    .SingUpBox {
+    .SignUpBox {
         border: 1px solid red;
         width: 100%
     }
-    .SingUpText{
-        font-family:monospace;
-        font-size:25px;
-        color:#FFF;
+    .SignUpText {
+        font-family: monospace;
+        font-size: 25px;
+        color: #FFF;
     }
-    .SingUpButton{
-
+    .SignUpButton {
     }
 </style>
+
+<script>
+    function RequestSignUp() {
+
+        var userObject = { Name: $("#UserName")[0].value, Password: $("#Password")[0].value }
+
+        if (userObject.Name === "" || userObject.Password === "")
+            return;
+
+        $.ajax({
+            url: "https://localhost:5001/Registration",
+            //url: "http://462495-co47915.tmweb.ru:8070/API/Message",
+            type: "post",
+            contentType: "application/json",
+            data: JSON.stringify(userObject),
+            success: function (result, status, xhr)
+            {
+                document.cookie = "token=" + result.token + ";expires=Thu, 01 Jan 2077 00:00:00 UTC; path=/;";
+                document.cookie = "name=" + result.name + ";expires=Thu, 01 Jan 2077 00:00:00 UTC; path=/;";
+                window.location.href = "http://localhost:5006/ChatPage";
+            },
+            error: function (xhr, status, error)
+            {
+
+            }
+        });
+        
+    }
+
+
+    //test GET
+    //document.GetServerMessage = function GetServerMessage()
+    //{
+    //    //$.get("https://localhost:2000/API/Message" + "/" + document.LastMsgID, ServerResponse);
+    //
+    //    $.ajax({
+    //        url: "https://localhost:5001/Registration",
+    //        //url: "http://462495-co47915.tmweb.ru:8070/API/Message",
+    //        type: "get",
+    //        contentType: "application/json",
+    //        xhrFields: 
+    //        {
+    //            withCredentials: true
+    //        },
+    //        success: function (result, status, xhr) {
+    //            
+    //        },
+    //        error: function (xhr, status, error) {
+    //
+    //        }
+    //    });
+    //
+    //}
+
+</script>

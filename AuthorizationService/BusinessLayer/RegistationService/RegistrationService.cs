@@ -25,8 +25,9 @@ namespace AuthorizationService.BusinessLayer
             var isUserExists = _dbContext.ChatUsers.Any(u => u.Name == user.Name);
             if (!isUserExists)
             {
-                user.UserToken = Guid.NewGuid();
+                user.Token = Guid.NewGuid();
                 _dbContext.ChatUsers.Add(user);
+                _dbContext.SaveChanges();
             }
             return isUserExists 
                    ? null

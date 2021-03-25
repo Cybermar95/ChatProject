@@ -10,7 +10,7 @@
         <div id="Container" class="MsgContainer"></div>
 
         <div class="InputContainer">
-            <input class="UserName" type="text" name="UserName" id="User" />
+            <input class="UserName" type="text" name="UserName" id="User" readonly ="readonly"/>
             <textarea class="UserMessage" placeholder="Write a message..." name="msg" id="UserMessage"> </textarea>
             <input class="SendButton" type="button" value="Send" onclick="SendMessage()" />
         </div>
@@ -20,8 +20,17 @@
 <script src="~/js/site.js" asp-append-version="true"></script>
 
 <script>
-  
+    function getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
 
+    function SetName() {
+        document.getElementById("User").value = getCookie("name");
+    }
+    SetName();
 </script>
 
 
