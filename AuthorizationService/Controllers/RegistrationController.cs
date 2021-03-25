@@ -7,7 +7,7 @@ namespace AuthorizationService.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class RegistrationController
+    public class RegistrationController : ControllerBase
     {
         private readonly IRegistrationService _registrationService;
 
@@ -16,12 +16,19 @@ namespace AuthorizationService.Controllers
             _registrationService = registrationService;
         }
 
-        [HttpGet]
-        public ActionResult<ChatUser> RegisterUser([FromBody] ChatUser chatUser) => _registrationService.RegisterUser(chatUser); // )
-
-        public void DeleteUser()
-        {
-            throw new NotImplementedException();
+        [HttpPost]
+        public ActionResult<ChatUser> RegisterUser([FromBody] ChatUser chatUser)
+        { 
+            var user = _registrationService.RegisterUser(chatUser);
+            return (ActionResult<ChatUser>)user ?? NotFound();
         }
+
+        [HttpGet]
+        public string CheckCookies() 
+        {
+
+            return Request.Cookies["token"];
+        } 
+
     }
 }

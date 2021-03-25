@@ -21,7 +21,7 @@ namespace AuthorizationService.BusinessLayer
 
             if (user != null)
             {
-                user.UserToken = Guid.NewGuid();
+                user.Token = Guid.NewGuid();
                 _dbContext.ChatUsers.Update(user);
                 return user;
             }
