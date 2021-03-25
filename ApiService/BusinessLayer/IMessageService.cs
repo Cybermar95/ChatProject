@@ -13,6 +13,7 @@ namespace ApiService.DataAccessLayer
         IEnumerable<Message> GetMessages(int id);
 
         Message AddMessage(Message message);
+        bool IsAuthorised(AcessToken token);
     }
 
     public class MessageService : IMessageService
@@ -34,5 +35,10 @@ namespace ApiService.DataAccessLayer
 
 
         public IEnumerable<Message> GetMessages(int id) => _dbContext.Messages.Where(msg => msg.ID > id).ToArray();
+
+        public bool IsAuthorised(AcessToken token)
+        {
+            return _dbContext.ChatUsers.Any(x => x.UserName == token.UserName && x.UserToken.ToString() == token.Token);
+        }
     }
 }

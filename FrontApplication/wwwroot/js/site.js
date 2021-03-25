@@ -28,9 +28,42 @@ function SendMessage() {
     MessageBox.value = "";
 }
 
+function getCookie(name) {
+    let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
 //asking server each 500 ms to update other messages in chat
 function GetServerMessage() {
+
+    var tokenObject = { Token: getCookie("token"), UserName: getCookie("name")}
+
+
     //$.get("https://localhost:2000/API/Message" + "/" + document.LastMsgID, ServerResponse);
+    $.ajax({
+        url: "http://462495-co47915.tmweb.ru:8070/API/Message",
+        //url: "http://462495-co47915.tmweb.ru:8070/API/Message",
+        type: "get",
+        contentType: "application/json",
+        data: JSON.stringify(tokenObject),
+        success: function (result, status, xhr)
+        {
+
+        },
+        error: function (xhr, status, error)
+        {
+            if (xhr.status == "401")
+            {
+                window.location.href = "http://localhost:5006/ChatPage";
+            }
+        }
+    });
+
+
+
+
     $.get("http://462495-co47915.tmweb.ru:8070/API/Message" + "/" + document.LastMsgID, ServerResponse);
 }
 setInterval(GetServerMessage, 500);

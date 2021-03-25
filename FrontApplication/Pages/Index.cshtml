@@ -1,31 +1,39 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Welcome to the club, buddy.";
 }
 
 <body>
-    <div class="SignUpBox" id="SignUpBox">
-        <div class="SignUpInput">
-            <label class="SignUpText">Sign Up</label> <br />
+
+    <div class="SignBox" id="SignBox">
+        <div class="SignInput">
+            <label class="SignUpText" id="SignHeader">Welcome to the club, buddy.</label> <br />
             <label class="SignUpText">UserName:</label>
             <input class="UserName" type="text" name="UserName" id="UserName" /><br />
             <label class="SignUpText">Password:</label>
             <input class="Password" type="text" name="Password" id="Password" /><br />
-            <input class="SignUpButton" type="button" value="SignUp" onclick="RequestSignUp()"/>
+            <input class="SignButton" type="button" value="Log In" onclick="RequestLogIn()"/>
+            <input class="SignButton" type="button" value="Register" onclick="RequestSignUp()"/>
         </div>
     </div>
 </body>
 
 <style>
-    .SignUpInput {
+    .SignInput {
         display: table;
-        margin: 0 auto;
-        border: 1px solid black;
+        border: 2.125px solid black;
+        justify-content: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
     }
-    .SignUpBox {
+    .SignBox {
         border: 1px solid red;
-        width: 100%
+        width: 100%;
+        height: 100%;
     }
     .SignUpText {
         font-family: monospace;
@@ -33,10 +41,21 @@
         color: #FFF;
     }
     .SignUpButton {
+        border-radius: 6px;
+        border: 2.5px solid #99AAB5;
+        font-family: monospace;
+        font-size: 15px;
+        background: #2c2f33;
+        color: #fff;
+        left: 1035px;
+        width: 90px;
+        float: right;
+        height: 30px;
     }
 </style>
 
 <script>
+
     function RequestSignUp() {
 
         var userObject = { Name: $("#UserName")[0].value, Password: $("#Password")[0].value }
@@ -58,35 +77,40 @@
             },
             error: function (xhr, status, error)
             {
-
+                if (xhr.status == "409")
+                {
+                    var signHeader = document.getElementById("SignHeader");
+                    signHeader.style.color = "#ff0000";
+                    signHeader.innerHTML= "This user is already exists :(";
+                }
             }
         });
         
     }
 
+    function RequestLogIn()
+    {
+        var userObject = { Name: $("#UserName")[0].value, Password: $("#Password")[0].value }
 
-    //test GET
-    //document.GetServerMessage = function GetServerMessage()
-    //{
-    //    //$.get("https://localhost:2000/API/Message" + "/" + document.LastMsgID, ServerResponse);
-    //
-    //    $.ajax({
-    //        url: "https://localhost:5001/Registration",
-    //        //url: "http://462495-co47915.tmweb.ru:8070/API/Message",
-    //        type: "get",
-    //        contentType: "application/json",
-    //        xhrFields: 
-    //        {
-    //            withCredentials: true
-    //        },
-    //        success: function (result, status, xhr) {
-    //            
-    //        },
-    //        error: function (xhr, status, error) {
-    //
-    //        }
-    //    });
-    //
-    //}
+        if (userObject.Name === "" || userObject.Password === "")
+            return;
+
+        $.ajax({
+            url: "https://localhost:5001/Authorize",
+            //url: "http://462495-co47915.tmweb.ru:8070/API/Message",
+            type: "post",
+            contentType: "application/json",
+            data: JSON.stringify(userObject),
+            success: function (result, status, xhr) {
+                document.cookie = "token=" + result.token + ";expires=Thu, 01 Jan 2077 00:00:00 UTC; path=/;";
+                document.cookie = "name=" + result.name + ";expires=Thu, 01 Jan 2077 00:00:00 UTC; path=/;";
+                window.location.href = "http://localhost:5006/ChatPage";
+            },
+            error: function (xhr, status, error) {
+                if (status = "") { }
+            }
+        });
+    }
+
 
 </script>
