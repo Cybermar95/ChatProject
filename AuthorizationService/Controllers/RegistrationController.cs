@@ -20,15 +20,14 @@ namespace AuthorizationService.Controllers
         public ActionResult<ChatUser> RegisterUser([FromBody] ChatUser chatUser)
         { 
             var user = _registrationService.RegisterUser(chatUser);
-            return (ActionResult<ChatUser>)user ?? NotFound();
+            return user != null 
+                   ?user
+                   :Conflict();
         }
 
         [HttpGet]
-        public string CheckCookies() 
-        {
-
-            return Request.Cookies["token"];
-        } 
+        public string CheckCookies() => Request.Cookies["token"];
+ 
 
     }
 }

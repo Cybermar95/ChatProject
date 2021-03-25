@@ -21,7 +21,7 @@ namespace AuthorizationService.Controllers
         public ActionResult<ChatUser> AuthorizeUser(string userName, string password)
         {
             var user = _authorizationService.Authorize(userName, password);
-            return (ActionResult<ChatUser>)user ?? NotFound();
+            return (ActionResult<ChatUser>)user ?? BadRequest();
         }
 
     }
