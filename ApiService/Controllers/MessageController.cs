@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApiService.Model;
 using ApiService.DataAccessLayer;
+using System.Text.Json;
 
 namespace ApiService.Controllers
 {
@@ -20,17 +21,27 @@ namespace ApiService.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<IEnumerable<Message>> Get(int id, [FromBody] AcessToken token)
+        public ActionResult<IEnumerable<Message>> Get(int id)
         {
             ActionResult<IEnumerable<Message>> result;
+            try
+            {
+                var tokenObjectStr = Request.Headers["TokenObject"];
+                AcessToken token = JsonSerializer.Deserialize<AcessToken>(tokenObjectStr);
+                if (_businessLayer.IsAuthorised(token))
+                {
+                    var messages = _businessLayer.GetMessages(id);
+                    result = new ActionResult<IEnumerable<Message>>(messages);
+                }
+                else
+                {
+                    result = Unauthorized();
+                }
 
-            if(_businessLayer.IsAuthorised(token))
-            {
-                var messages = _businessLayer.GetMessages(id);
-                result = new ActionResult<IEnumerable<Message>>(messages);
             }
-            else
+            catch(Exception e)
             {
+                //TODO 
                 result = Unauthorized();
             }
 
