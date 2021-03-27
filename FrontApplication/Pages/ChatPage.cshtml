@@ -1,39 +1,22 @@
 ﻿@page
 @model FrontApplication.Pages.TestModel
-@{
-}
-<link rel="stylesheet" href="~/css/site.css" />
 
+<head>
+    <link rel="stylesheet" href="~/css/ChatPage.css" />
+</head>
 
 <body>
-    <div>
-        <div id="Container" class="MsgContainer"></div>
-
-        <div class="InputContainer">
-            <input class="UserName" type="text" name="UserName" id="User" readonly ="readonly"/>
-            <textarea class="UserMessage" placeholder="Write a message..." name="msg" id="UserMessage"> </textarea>
-            <input class="SendButton" type="button" value="Send" onclick="SendMessage()" />
-        </div>
-    </div>
+    <div id="ChatRoomPanel"></div>
 </body>
 
-<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/CookieHandler.js"></script>
+<script src="~/js/ChatRoom.js"></script>
 
 <script>
-    function getCookie(name) {
-        let matches = document.cookie.match(new RegExp(
-            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-        ));
-        return matches ? decodeURIComponent(matches[1]) : undefined;
-    }
-
-    function SetName() {
-        document.getElementById("User").value = getCookie("name");
-    }
-    SetName();
+    //var ServerURL = "http://localhost:2000/";
+    var ServerURL = "http://462495-co47915.tmweb.ru:2000/",
+    var chatRoomPanel = $("#ChatRoomPanel")[0];
+    var ChatRoom = new CreateNewChatRoom(chatRoomPanel, ServerURL);
 </script>
-
-
-
-
-

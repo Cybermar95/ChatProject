@@ -38,7 +38,8 @@ namespace ApiService.DataAccessLayer
 
         public bool IsAuthorised(AcessToken token)
         {
-            return _dbContext.ChatUsers.Any(x => x.UserName == token.UserName && x.UserToken.ToString() == token.Token);
+
+            return _dbContext.ChatUsers.Where(x => x.Name == token.Name && x.Token == token.Token).AsEnumerable().Any();
         }
     }
 }

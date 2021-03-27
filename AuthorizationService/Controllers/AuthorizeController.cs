@@ -17,11 +17,13 @@ namespace AuthorizationService.Controllers
             _authorizationService = authorizationService;
         }
 
-        [HttpGet("{userName}/{password}")]
-        public ActionResult<ChatUser> AuthorizeUser(string userName, string password)
+        [HttpPost]
+        public ActionResult<ChatUser> AuthorizeUser([FromBody] ChatUser chatUser)
         {
-            var user = _authorizationService.Authorize(userName, password);
-            return (ActionResult<ChatUser>)user ?? BadRequest();
+            var user = _authorizationService.Authorize(chatUser.Name, chatUser.Password);
+            return user != null
+                   ? user
+                   : Conflict();
         }
 
     }

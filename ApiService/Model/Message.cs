@@ -22,7 +22,6 @@ namespace ApiService.Model
         [StringLength(16)]
         public string UserName { get; set; }
 
-        [StringLength(256)]
         public string Text { get; set; }
     }
 }

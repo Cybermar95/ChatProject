@@ -15,19 +15,7 @@ namespace AuthorizationService.BusinessLayer
             _dbContext = dBContext;
         }
 
-        public ChatUser Authorize(string userName, string password)
-        {
-            var user = _dbContext.ChatUsers.FirstOrDefault(user => user.Name == userName && user.Password == password);
-
-            if (user != null)
-            {
-                user.Token = Guid.NewGuid();
-                _dbContext.ChatUsers.Update(user);
-                return user;
-            }
-
-            return null;
-        }
+        public ChatUser Authorize(string userName, string password) => _dbContext.ChatUsers.FirstOrDefault(user => user.Name == userName && user.Password == password);
 
         public void LogOff(string UserName, Guid Token)
         {

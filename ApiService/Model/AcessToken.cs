@@ -1,8 +1,10 @@
-﻿namespace ApiService.Model
+﻿using System;
+
+namespace ApiService.Model
 {
     public class AcessToken
     {
-        public string Token { get; set; }
-        public string UserName { get; set; }
+        public Guid Token { get; set; }
+        public string Name { get; set; }
     }
 }

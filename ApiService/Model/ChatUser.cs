@@ -9,12 +9,12 @@ namespace ApiService.Model
     {
         [Key]
         [Required]
-        public int UserID { get; set; }
+        public int ID { get; set; }
         
         [Required]
         [StringLength(16)]
-        public string UserName { get; set; }
+        public string Name { get; set; }
 
-        public Guid UserToken { get; set; }
+        public Guid Token { get; set; }
     }
 }
