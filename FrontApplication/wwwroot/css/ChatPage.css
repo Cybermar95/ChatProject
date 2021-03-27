@@ -39,32 +39,29 @@
 }
 
 .MsgInput {
-    width: 1125px;
     border-radius: 10px;
     border: 2.5px solid #99AAB5;
     font-family: monospace;
     font-size: 15px;
-    position: center;
     resize: none;
     background: #2c2f33;
     color: #fff;
-    margin-top: 10px;
-    width: 100%;
     padding: 10px;
-    height: 75px;
+    height: 95%;
+    width: 90%;
 }
 
 .SendButton {
     border-radius: 6px;
-    border: 2.5px solid #99AAB5;
+    border: 10px solid #99AAB5;
     font-family: monospace;
     font-size: 15px;
     background: #2c2f33;
     color: #fff;
-    left: 1035px;
-    width: 90px;
     float: right;
-    height: 30px;
+    height: 95%;
+    width: 10%;
+    border-color: limegreen;
 }
     .SendButton:focus {
         outline: none;
