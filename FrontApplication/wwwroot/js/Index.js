@@ -1,5 +1,5 @@
 ﻿//var ServerURL = "http://localhost:5001/";
-var ServerURL= "http://462495-co47915.tmweb.ru:5001/",
+var ServerURL = "http://188.225.86.132:5001/";
 
 
 function SignUp() {
