@@ -5,11 +5,21 @@ function CreateNewChatRoom(roomPanel, serverURL)
 
     this.LastMsgID = 0;
 
+    this.RoomID = 1;
+
+    this.OnlineUsers;
+
+
+
+
     /** Время в милисекундах для обновления чата. */
-    this.UpdateTime = 500;
+    this.UpdateTime = 2000;
 
     /** Токен доступа к серверу. */
-    this.AccessToken = { Token: GetCookie("Token"), Name: GetCookie("Name") };
+    this.AccessToken = GetCookie("Token");
+
+    /** Токен доступа к серверу. */
+    this.UserName = GetCookie("Name");
 
     /** Создание Html элементов чат комнаты. */
     function CreateRoomElements(roomPanel)
@@ -37,13 +47,66 @@ function CreateNewChatRoom(roomPanel, serverURL)
     }
     CreateRoomElements.call(this, roomPanel);
 
+    /** Получение онлайн пользователей комнаты. */
+    this.GetOnlineUsers = function ()
+    {
+        var context = this;
+        $.ajax({
+            url: this.ServerURL + "API/RoomOnlineStatus" + "/" + this.RoomID + "?name=" + this.UserName,
+            type: "get",
+            headers: { 'AccessToken': this.AccessToken },
+            success: function (data) {
+                context.RefreshRoomOnlinePanel(data);
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status == "401") {
+                    window.location.href = location.origin;
+                }
+            }
+        });
+    }
+
+    /** Обновление списка пользователей онлайн */
+    this.RefreshRoomOnlinePanel = function (data)
+    {
+        this.OnlineUsers = data;
+        console.log(JSON.stringify(this.OnlineUsers));
+    }
+
+    /** Запустить обновление онлайн. */
+    this.StartUpdateOnlinePanel = function (context) {
+        this.UpdateOnlineUsersInterval = setInterval(function () {
+            context.GetOnlineUsers.call(context)
+        }, this.UpdateTime)
+    };
+
+    /** Остановить обновление онлайн. */
+    this.StopUpdateOnlinePanel = function () {
+        clearInterval(this.UpdateOnlineUsersInterval);
+    };
+
+    // Запуск обновления онлайн.
+    this.StartUpdateOnlinePanel(this);
+
+
+
+
+
+
+
+
+
+
+
     /** Получение новых сообщений с сервера. */
-    this.GetNewMsg = function () {
+    this.GetNewMsg = function ()
+    {
+
         var context = this;
         $.ajax({
             url: this.ServerURL + "API/Message" + "/" + this.LastMsgID,
             type: "get",
-            headers: { 'TokenObject': JSON.stringify(this.AccessToken) },
+            headers: { 'AccessToken': this.AccessToken },
             success: function (data) {
                 context.AddNewMsgToPanel(data);
             },
@@ -74,7 +137,7 @@ function CreateNewChatRoom(roomPanel, serverURL)
 
     /** Отправка сообщения на сервер. */
     this.SendMsg = function () {
-        var msgObject = { UserName: this.AccessToken.Name, Text: this.MsgInput.value.split('\n').join('<br>') }
+        var msgObject = { UserName: this.UserName, Text: this.MsgInput.value.split('\n').join('<br>') }
 
         if (msgObject.UserName.trim() == "" || msgObject.Text.trim() == "")
             return;

@@ -1,21 +1,11 @@
-﻿using ApiService.Model;
-using Microsoft.AspNetCore.Mvc;
+﻿using ApiService.DataAccessLayer;
+using ApiService.Model;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace ApiService.DataAccessLayer
+namespace ApiService.BusinessLayer
 {
-    public interface IMessageService
-    {
-        IEnumerable<Message> GetMessages(int id);
-
-        Message AddMessage(Message message);
-        bool IsAuthorised(AcessToken token);
-    }
-
     public class MessageService : IMessageService
     {
         private readonly IWebApiDBContext _dbContext;
@@ -36,10 +26,6 @@ namespace ApiService.DataAccessLayer
 
         public IEnumerable<Message> GetMessages(int id) => _dbContext.Messages.Where(msg => msg.ID > id).ToArray();
 
-        public bool IsAuthorised(AcessToken token)
-        {
-
-            return _dbContext.ChatUsers.Where(x => x.Name == token.Name && x.Token == token.Token).AsEnumerable().Any();
-        }
+        public bool IsAuthorised(Guid token) => _dbContext.ChatUsers.Where(x => x.Token == token).AsEnumerable().Any();
     }
 }
