@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ApiService.BusinessLayer;
+using ApiService.DataAccessLayer;
+using ApiService.Model;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ApiService.Model;
-using ApiService.DataAccessLayer;
-using System.Text.Json;
 
 namespace ApiService.Controllers
 {
@@ -21,14 +19,13 @@ namespace ApiService.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<IEnumerable<Message>> Get(int id)
+        public ActionResult<IEnumerable<Message>> GetMessages(int id)
         {
             ActionResult<IEnumerable<Message>> result;
             try
             {
-                var tokenObjectStr = Request.Headers["TokenObject"];
-                AcessToken token = JsonSerializer.Deserialize<AcessToken>(tokenObjectStr);
-                if (_businessLayer.IsAuthorised(token))
+                Guid.TryParse(Request.Headers["AccessToken"], out Guid accessToken);
+                if (_businessLayer.IsAuthorised(accessToken))
                 {
                     var messages = _businessLayer.GetMessages(id);
                     result = new ActionResult<IEnumerable<Message>>(messages);
@@ -39,7 +36,7 @@ namespace ApiService.Controllers
                 }
 
             }
-            catch(Exception e)
+            catch
             {
                 //TODO 
                 result = Unauthorized();
