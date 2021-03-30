@@ -18,13 +18,7 @@ namespace AuthorizationService.Controllers
         }
 
         [HttpPost]
-        public ActionResult<ChatUser> AuthorizeUser([FromBody] ChatUser chatUser)
-        {
-            var user = _authorizationService.Authorize(chatUser.Name, chatUser.Password);
-            return user != null
-                   ? user
-                   : Conflict();
-        }
-
+        public ActionResult<AccessTokens> AuthorizeUser([FromBody] ChatUsers chatUser) 
+            => _authorizationService.Authorize(chatUser.Name, chatUser.Password);
     }
 }

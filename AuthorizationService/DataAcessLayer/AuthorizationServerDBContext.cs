@@ -9,17 +9,12 @@ namespace AuthorizationService.DataAcessLayer
 {
     public class AuthorizationServerDBContext : DbContext, IAuthorizationServerDBContext
     {
-        public DbSet<ChatUser> ChatUsers { get; set; }
+        public DbSet<ChatUsers> ChatUsers { get; set; }
+
+        public  DbSet<AccessTokens> AcessTokens { get; set; }
 
         public AuthorizationServerDBContext(DbContextOptions options) : base(options)
         {
         }
-    }
-
-    public interface IAuthorizationServerDBContext
-    {
-        DbSet<ChatUser> ChatUsers { get; set; }
-
-        int SaveChanges();
     }
 }

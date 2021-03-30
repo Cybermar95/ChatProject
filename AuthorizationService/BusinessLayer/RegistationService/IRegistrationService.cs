@@ -1,12 +1,11 @@
 ﻿using AuthorizationService.Model;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AuthorizationService.BusinessLayer
 {
     public interface IRegistrationService
     {
-        ChatUser RegisterUser(ChatUser user);
-        bool DeleteUser(ChatUser user);
+        ActionResult<AccessTokens> RegisterUser(ChatUsers user);
+        bool DeleteUser(ChatUsers user);
     }
 }

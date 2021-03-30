@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using ApiService.Model;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ApiService.BusinessLayer
 {
@@ -10,17 +11,17 @@ namespace ApiService.BusinessLayer
     {
 
         // Классика.
-        private readonly ConcurrentDictionary<int, ChatRoom> ChatRooms = new ConcurrentDictionary<int, ChatRoom>(new List<KeyValuePair<int, ChatRoom>>() {new KeyValuePair<int, ChatRoom>(1, new ChatRoom())});
+        private readonly ConcurrentDictionary<int, ChatRoomOnlineCache> ChatRooms = new ConcurrentDictionary<int, ChatRoomOnlineCache>(new List<KeyValuePair<int, ChatRoomOnlineCache>>() {new KeyValuePair<int, ChatRoomOnlineCache>(1, new ChatRoomOnlineCache())});
 
         public void UpdateUserStatus(int roomID, string UserName)
         {
             ChatRooms[roomID].RecentOnlineUsers[UserName] = DateTime.Now;
         }
 
-        public IEnumerable<string> GetOnlineUsers(int roomID)
+        public ActionResult<IEnumerable<string>> GetOnlineUsers(int roomID)
         {
             RefreshRoomUsers(roomID);
-            return ChatRooms[roomID].RecentOnlineUsers.Keys;
+            return new(ChatRooms[roomID].RecentOnlineUsers.Keys);
         }
 
 
@@ -35,7 +36,7 @@ namespace ApiService.BusinessLayer
 
         private void CreateRoom(int RoomID)
         {
-            ChatRooms.TryAdd(RoomID, new ChatRoom());
+            ChatRooms.TryAdd(RoomID, new ChatRoomOnlineCache());
         }
 
     }

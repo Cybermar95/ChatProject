@@ -4,17 +4,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApiService.Model
 {
-    [Table("ChatUser")]
-    public class ChatUser
+    [Table("AcessTokens")]
+    public class AcessTokens
     {
         [Key]
         [Required]
         public int ID { get; set; }
-        
-        [Required]
-        [StringLength(16)]
-        public string Name { get; set; }
 
+        [Required]
+        public int UserID { get; set; }
+
+        [Required]
         public Guid Token { get; set; }
     }
 }
