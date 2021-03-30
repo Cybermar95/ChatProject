@@ -17,17 +17,7 @@ namespace AuthorizationService.Controllers
         }
 
         [HttpPost]
-        public ActionResult<ChatUser> RegisterUser([FromBody] ChatUser chatUser)
-        { 
-            var user = _registrationService.RegisterUser(chatUser);
-            return user != null 
-                   ?user
-                   :Conflict();
-        }
-
-        [HttpGet]
-        public string CheckCookies() => Request.Cookies["token"];
- 
-
+        public ActionResult<AccessTokens> RegisterUser([FromBody] ChatUsers chatUser) 
+            => _registrationService.RegisterUser(chatUser);
     }
 }

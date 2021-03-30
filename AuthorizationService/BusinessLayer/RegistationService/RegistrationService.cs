@@ -1,5 +1,6 @@
 ﻿using AuthorizationService.DataAcessLayer;
 using AuthorizationService.Model;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 
@@ -8,6 +9,7 @@ namespace AuthorizationService.BusinessLayer
     public class RegistrationService : IRegistrationService
     {
         private readonly IAuthorizationServerDBContext _dbContext;
+        private readonly ConflictResult _conflict = new();
 
         public RegistrationService(IAuthorizationServerDBContext dbContext)
         {
@@ -15,23 +17,34 @@ namespace AuthorizationService.BusinessLayer
         }
 
 
-        public bool DeleteUser(ChatUser user)
+        public bool DeleteUser(ChatUsers user)
         {
             throw new NotImplementedException();
         }
 
-        public ChatUser RegisterUser(ChatUser user)
+        public ActionResult<AccessTokens> RegisterUser(ChatUsers user)
         {
+            ActionResult<AccessTokens> result = _conflict;
             var isUserExists = _dbContext.ChatUsers.Any(u => u.Name == user.Name);
             if (!isUserExists)
             {
-                user.Token = Guid.NewGuid();
-                _dbContext.ChatUsers.Add(user);
+                var dbUser =_dbContext.ChatUsers.Add(user);
+
                 _dbContext.SaveChanges();
+
+                
+
+                var newToken = new AccessTokens() {
+                                                   UserID = dbUser.Entity.ID, 
+                                                   Token = Guid.NewGuid() };
+
+
+                _dbContext.AcessTokens.Add(newToken);
+                _dbContext.SaveChanges();
+
+                result = newToken;
             }
-            return isUserExists 
-                   ? null
-                   : user;
+            return result;
         }
     }
 }

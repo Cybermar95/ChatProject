@@ -1,23 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace AuthorizationService.Model
+namespace ApiService.Model
 {
-    [Table("ChatUser")]
-    public class ChatUser
+    [Table("ChatRooms")]
+    public class ChatRooms
     {
         [Key]
         [Required]
         public int ID { get; set; }
 
         [Required]
-        [StringLength(16)]
         public string Name { get; set; }
 
         [Required]
-        [StringLength(16)]
-        public string Password { get; set; }
-        public Guid Token { get; set; }
+        public bool IsPublic { get; set; }
     }
 }
