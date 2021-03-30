@@ -7,10 +7,8 @@ function CreateNewChatRoom(roomPanel, serverURL)
 
     this.RoomID = 1;
 
-    this.OnlineUsers;
-
-
-
+    /** Список онлайн пользователей. */
+    this.OnlineUsers = [];
 
     /** Время в милисекундах для обновления чата. */
     this.UpdateTime = 2000;
@@ -24,6 +22,37 @@ function CreateNewChatRoom(roomPanel, serverURL)
     /** Создание Html элементов чат комнаты. */
     function CreateRoomElements(roomPanel)
     {
+        /*Общая таблица для разметки страницы */
+        this.ChatRoomTable = document.createElement("table");
+        this.ChatRoomTable.className = "ChatRoomTable";
+
+        /*Первая строка */
+        this.ChatRoomTableFirstRow = document.createElement("tr");
+        this.ChatRoomTableFirstRow.className = "ChatRoomTableFirstRow";
+        this.ChatRoomTable.append(this.ChatRoomTableFirstRow);
+
+        /*Первая ячейка первой строки */
+        this.MsgPanelTD = document.createElement("td");
+        this.MsgPanelTD.className = "MsgPanelTD";
+        this.ChatRoomTableFirstRow.append(this.MsgPanelTD);
+
+        /*Вторая ячейка первой строки */
+        this.WhosOnlinePanelTD = document.createElement("td");
+        this.WhosOnlinePanelTD.className = "WhosOnlinePanelTD";
+        this.WhosOnlinePanelTD.rowSpan = "2";
+        this.ChatRoomTableFirstRow.append(this.WhosOnlinePanelTD);
+
+        /*Вторая строка */
+        this.ChatRoomTableSecondRow = document.createElement("tr");
+        this.ChatRoomTableSecondRow.className = "ChatRoomTableSecondRow";
+        this.ChatRoomTable.append(this.ChatRoomTableSecondRow);
+
+        /*Первая ячейка второй строки */
+        this.InputPanelTD = document.createElement("td");
+        this.InputPanelTD.className = "InputPanelTD";
+        this.ChatRoomTableSecondRow.append(this.InputPanelTD);
+
+        /*Панель чата */
         this.MsgPanel = document.createElement("div");
         this.MsgPanel.className = "MsgPanel";
 
@@ -39,11 +68,18 @@ function CreateNewChatRoom(roomPanel, serverURL)
         this.SendButton.innerHTML = "Send";
         this.SendButton.ChatRoom = this;
 
+        this.WhosOnlinePanel = document.createElement("div");
+        this.WhosOnlinePanel.className = "WhosOnlinePanel";
+
+        roomPanel.append(this.ChatRoomTable);
+
+        this.ChatRoomTable.childNodes[0].childNodes[0].appendChild(this.MsgPanel);
+        this.ChatRoomTable.childNodes[0].childNodes[1].appendChild(this.WhosOnlinePanel);
+        this.ChatRoomTable.childNodes[1].childNodes[0].appendChild(InputPanel);
+
         InputPanel.append(this.MsgInput);
         InputPanel.append(this.SendButton);
 
-        roomPanel.append(this.MsgPanel);
-        roomPanel.append(InputPanel);
     }
     CreateRoomElements.call(this, roomPanel);
 
@@ -69,7 +105,28 @@ function CreateNewChatRoom(roomPanel, serverURL)
     /** Обновление списка пользователей онлайн */
     this.RefreshRoomOnlinePanel = function (data)
     {
+        for (var i = 0; i < data.length; i++) {
+            if (!this.OnlineUsers.includes(data[i]))
+            {
+                let newOnlineUserDiv = document.createElement('div');
+                newOnlineUserDiv.className = 'OnlineUserDiv';
+                newOnlineUserDiv.id = 'OnlineUser';
+                newOnlineUserDiv.innerHTML = data[i];
+
+                this.WhosOnlinePanel.append(newOnlineUserDiv);
+            }
+        }
+
+        for (var i = 0; i < this.WhosOnlinePanel.childNodes.length; i++)
+        {
+            if (!data.includes(this.WhosOnlinePanel.childNodes[i].innerHTML))
+            {
+                this.WhosOnlinePanel.removeChild(this.WhosOnlinePanel.childNodes[i]);
+            }
+        }
+
         this.OnlineUsers = data;
+
         console.log(JSON.stringify(this.OnlineUsers));
     }
 
@@ -87,16 +144,6 @@ function CreateNewChatRoom(roomPanel, serverURL)
 
     // Запуск обновления онлайн.
     this.StartUpdateOnlinePanel(this);
-
-
-
-
-
-
-
-
-
-
 
     /** Получение новых сообщений с сервера. */
     this.GetNewMsg = function ()

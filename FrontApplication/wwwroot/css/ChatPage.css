@@ -5,20 +5,65 @@
     background-color: #23272a;
 }
 
+.ChatRoomTable{
+    height: 100%;
+    width: 100%;
+}
+
+.MsgPanelTD {
+    height: 80%;
+    width: 85%;
+}
+
+.WhosOnlinePanelTD {
+    height: 100%;
+    width: 15%;
+    vertical-align: top;
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-left: 20px;
+    border-radius: 25px;
+    box-shadow: inset 0px 0px 6px 4px rgb(63, 255, 14);
+}
+
+.InputPanelTD {
+    height: 20%;
+    width: 85%;
+}
+
 .MsgPanel {
     overflow: scroll;
-    height: 80%;
+    height: 100%;
     padding-left: 40px;
     padding-right: 40px;
     position: relative
 }
 
 .InputPanel {
-    height: 20%;
+    height: 100%;
     padding-left: 40px;
     padding-right: 40px;
     position: relative
 }
+
+.OnlineUserDiv {
+    width: 100%;
+    background: #23272a;
+    border-radius: 5px;
+    float: left;
+    margin-bottom: 20px;
+    color: #3fff00;
+    padding: 8px;
+    padding-left: 20px;
+    box-sizing: border-box;
+    font-family: monospace;
+    font-size: 18px;
+    box-shadow: 2px 3px 5px 2px rgb(53, 162, 0);
+    user-select: none;
+    font-weight: bold;
+    padding-right: 20px;
+}
+
 
 .MsgStyle {
     width: 100%;
@@ -32,7 +77,7 @@
     box-sizing: border-box;
     font-family: monospace;
     font-size: 14px;
-    box-shadow: 5px 5px 7px rgb(0 0 0 / 50%);
+    box-shadow: 5px 5px 7px rgb(0, 0, 0);
     position: center;
     user-select: none;
     overflow-wrap: break-word;
