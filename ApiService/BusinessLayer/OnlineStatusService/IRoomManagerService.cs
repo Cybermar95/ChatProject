@@ -8,7 +8,7 @@ namespace ApiService.BusinessLayer
 {
     public interface IRoomManagerService
     {
-        public void UpdateUserStatus(int roomID, string UserName);
+        public void UpdateUserStatus(int roomID, string userName);
 
         ActionResult<IEnumerable<string>> GetOnlineUsers(int roomID);
     }

@@ -48,12 +48,14 @@ namespace ApiService.AccessLayer
 
         private bool? IsPublicRoom(int roomID) => _dbContext.ChatRooms.Where(room => room.ID == roomID).FirstOrDefault()?.IsPublic;
 
-        private int? GetUserIDByToken(Guid accessToken) => _dbContext.AcessTokens.Join(_dbContext.ChatUsers,
+        public int? GetUserIDByToken(Guid accessToken) => _dbContext.AcessTokens.Join(_dbContext.ChatUsers,
                                                                             acessTokens => acessTokens.UserID,
                                                                             chatUsers => chatUsers.ID,
                                                                             (acessTokens, chatUsers) => new { acessTokens.Token, chatUsers.ID })
                                                                            .Where(qr => qr.Token == accessToken)
                                                                            .FirstOrDefault()?.ID;
+
+        public string GetUserNameById(int id) => _dbContext.ChatUsers.FirstOrDefault(x => x.ID == id).Name ?? "";
 
         private bool CheckRoomInvitations(int roomID, int userID) => _dbContext.ChatRoomInvitations.Any(x => x.UserID == userID && x.RoomID == roomID);
     }

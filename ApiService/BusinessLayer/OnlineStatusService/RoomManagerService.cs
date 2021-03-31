@@ -13,9 +13,9 @@ namespace ApiService.BusinessLayer
         // Классика.
         private readonly ConcurrentDictionary<int, ChatRoomOnlineCache> ChatRooms = new ConcurrentDictionary<int, ChatRoomOnlineCache>(new List<KeyValuePair<int, ChatRoomOnlineCache>>() {new KeyValuePair<int, ChatRoomOnlineCache>(1, new ChatRoomOnlineCache())});
 
-        public void UpdateUserStatus(int roomID, string UserName)
+        public void UpdateUserStatus(int roomID, string userName)
         {
-            ChatRooms[roomID].RecentOnlineUsers[UserName] = DateTime.Now;
+            ChatRooms[roomID].RecentOnlineUsers[userName] = DateTime.Now;
         }
 
         public ActionResult<IEnumerable<string>> GetOnlineUsers(int roomID)

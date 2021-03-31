@@ -19,7 +19,7 @@ namespace AuthorizationService.DataAccessLayer
 
             serviceCollection.AddScoped<IAuthorizationServerDBContext>(x=> new AuthorizationServerDBContext(dbContextOptions)); //DI injection DB Context
 
-            serviceCollection.AddScoped<IAuthService>(x => new AuthService(x.GetService<IAuthorizationServerDBContext>())); //DI injection auth service
+            serviceCollection.AddScoped<IAuthService>(x => new AuthService(x.GetService<IAuthorizationServerDBContext>()));                 //DI injection auth service
             serviceCollection.AddScoped<IRegistrationService>(x => new RegistrationService(x.GetService<IAuthorizationServerDBContext>())); //DI injection registration service
 
             return serviceCollection;

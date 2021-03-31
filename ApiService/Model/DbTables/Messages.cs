@@ -14,12 +14,16 @@ namespace ApiService.Model
         [Required]
         public int RoomID { get; set; }
 
-        [StringLength(16)]
-        public string UserID { get; set; }
+        [Required]
+        public int UserID { get; set; }
+
+        [Required]
+        public string UserName{ get; set; }
 
         [Required]
         public DateTime Date { get; set; }
 
+        [Required]
         public string Text { get; set; }
     }
 }

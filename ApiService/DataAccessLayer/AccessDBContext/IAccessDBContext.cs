@@ -14,7 +14,7 @@ namespace ApiService.DataAccessLayer
 
         DbSet<ChatRooms> ChatRooms { get; set; }
 
-        DbSet<AcessTokens> AcessTokens { get; set; }
+        DbSet<AccessTokens> AcessTokens { get; set; }
         
     }
 }

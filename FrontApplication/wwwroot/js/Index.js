@@ -16,7 +16,6 @@ function SignUp() {
         data: JSON.stringify(userObject),
         success: function (result, status, xhr) {
             document.cookie = "Token=" + result.token + ";expires=Thu, 01 Jan 2077 00:00:00 UTC; path=/;";
-            document.cookie = "Name=" + result.name + ";expires=Thu, 01 Jan 2077 00:00:00 UTC; path=/;";
             window.location.href = location.origin+ "/ChatPage";
         },
         error: function (xhr, status, error) {
@@ -43,7 +42,6 @@ function LogIn() {
         data: JSON.stringify(userObject),
         success: function (result, status, xhr) {
             document.cookie = "Token=" + result.token + ";expires=Thu, 01 Jan 2077 00:00:00 UTC; path=/;";
-            document.cookie = "Name=" + result.name + ";expires=Thu, 01 Jan 2077 00:00:00 UTC; path=/;";
             window.location.href = location.origin + "/ChatPage";
         },
         error: function (xhr, status, error) {

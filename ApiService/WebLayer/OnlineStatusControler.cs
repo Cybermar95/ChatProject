@@ -1,6 +1,7 @@
 ﻿using ApiService.AccessLayer;
 using ApiService.BusinessLayer;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 
 namespace ApiService.WebLayer
@@ -15,21 +16,50 @@ namespace ApiService.WebLayer
         public RoomOnlineStatusController(IRoomManagerService businessLayer, IAccessManager accessManager)
         {
             _businessLayer = businessLayer;
-            this._accessManager = accessManager;
+            _accessManager = accessManager;
         }
 
-        delegate ActionResult<IEnumerable<string>> Operation(int roomID, string name);
+
+
 
         [HttpGet("{roomID}")]
-        public ActionResult<IEnumerable<string>> Get(int roomID, [FromQuery] string name)
+        public ActionResult<IEnumerable<string>> Get(int roomID, [FromHeader] string accessToken)
         {
-            Operation operation  = (x, y) => { _businessLayer.UpdateUserStatus(x, y); return _businessLayer.GetOnlineUsers(x);};
-        
-            var checkAccessResult = _accessManager.CheckAccess(roomID, Request.Headers["AccessToken"]);
+            ActionResult<IEnumerable<string>> result;
 
-            return (checkAccessResult is OkResult)
-                    ? operation(roomID, name)
-                    : checkAccessResult;
+            var checkAccessResult = _accessManager.CheckAccess(roomID, accessToken);
+
+
+            if (accessToken is null)
+                return NotFound();
+
+
+            var userID = _accessManager.GetUserIDByToken(Guid.Parse(accessToken));
+            
+
+
+            if (userID is { })
+            {
+
+                var userName = _accessManager.GetUserNameById(userID.Value);
+
+
+                if (checkAccessResult is OkResult)
+                {
+                    _businessLayer.UpdateUserStatus(roomID, userName);
+                    result = _businessLayer.GetOnlineUsers(roomID);
+                }
+                else
+                {
+                    result = checkAccessResult;
+                }
+            }
+            else
+            {
+                result = Conflict();
+            }
+
+            return result;
         }
     }
 }
