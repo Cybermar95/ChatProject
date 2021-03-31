@@ -14,5 +14,9 @@ namespace ApiService.AccessLayer
         /// <param name="roomId">Идентификатор комнаты.</param>
         /// <param name="accessToken">Токен доступа пользователя.</param>
         ActionResult CheckAccess(int roomID, string accessToken);
+
+        int? GetUserIDByToken(Guid accessToken);
+
+        string GetUserNameById(int id);
     }
 }

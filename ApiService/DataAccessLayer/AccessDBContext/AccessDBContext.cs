@@ -7,7 +7,7 @@ namespace ApiService.DataAccessLayer
     {
         public DbSet<ChatUsers> ChatUsers { get; set; }
         public DbSet<ChatRoomInvitations> ChatRoomInvitations { get; set; }
-        public DbSet<AcessTokens> AcessTokens { get; set; }
+        public DbSet<AccessTokens> AcessTokens { get; set; }
 
         public DbSet<ChatRooms> ChatRooms { get; set; }
 

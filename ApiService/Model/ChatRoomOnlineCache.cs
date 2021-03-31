@@ -6,6 +6,6 @@ namespace ApiService.Model
 {
     public class ChatRoomOnlineCache
     {
-        public readonly Dictionary<string, DateTime> RecentOnlineUsers = new();
+        public readonly Dictionary<string, DateTime> RecentOnlineUsers = new ();
     }
 }

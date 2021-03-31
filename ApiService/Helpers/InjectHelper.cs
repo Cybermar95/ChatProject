@@ -1,8 +1,10 @@
-﻿using ApiService.BusinessLayer;
+﻿using ApiService.AccessLayer;
+using ApiService.BusinessLayer;
 using ApiService.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace ApiService
 {
@@ -17,11 +19,18 @@ namespace ApiService
 
             serviceCollection.AddScoped<IMessageService>(x => new MessageService(x.GetService<IWebApiDBContext>()));
 
+            serviceCollection.AddScoped<IAccessDBContext>(x => new AccessDBContext(dbContextOptions));
+
+            serviceCollection.AddScoped<IAccessManager>(x => new AccessManager(x.GetService<IAccessDBContext>()));
+
             serviceCollection.AddSingleton<IRoomManagerService>(new RoomManagerService());
 
-            serviceCollection.AddSingleton<IAccessDBContext>(new AccessDBContext(dbContextOptions));
-
             return serviceCollection;
+
+
+
+
+
         }
     }
 }

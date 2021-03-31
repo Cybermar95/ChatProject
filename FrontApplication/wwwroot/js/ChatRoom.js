@@ -95,7 +95,7 @@ function CreateNewChatRoom(roomPanel, serverURL)
                 context.RefreshRoomOnlinePanel(data);
             },
             error: function (xhr, status, error) {
-                if (xhr.status == "401") {
+                {
                     window.location.href = location.origin;
                 }
             }
@@ -126,8 +126,6 @@ function CreateNewChatRoom(roomPanel, serverURL)
         }
 
         this.OnlineUsers = data;
-
-        console.log(JSON.stringify(this.OnlineUsers));
     }
 
     /** Запустить обновление онлайн. */
@@ -151,14 +149,14 @@ function CreateNewChatRoom(roomPanel, serverURL)
 
         var context = this;
         $.ajax({
-            url: this.ServerURL + "API/Message" + "/" + this.LastMsgID,
+            url: this.ServerURL + "API/Message" + "/" + this.RoomID + "?lastMessageID=" + this.LastMsgID,
             type: "get",
-            headers: { 'AccessToken': this.AccessToken },
+            headers: { 'accessToken': this.AccessToken },
             success: function (data) {
                 context.AddNewMsgToPanel(data);
             },
             error: function (xhr, status, error) {
-                if (xhr.status == "401") {
+                {
                     window.location.href = location.origin;
                 }
             }
@@ -184,14 +182,15 @@ function CreateNewChatRoom(roomPanel, serverURL)
 
     /** Отправка сообщения на сервер. */
     this.SendMsg = function () {
-        var msgObject = { UserName: this.UserName, Text: this.MsgInput.value.split('\n').join('<br>') }
+        var msgObject = {Text: this.MsgInput.value.split('\n').join('<br>')}
 
-        if (msgObject.UserName.trim() == "" || msgObject.Text.trim() == "")
+        if (msgObject.Text.trim() == "")
             return;
 
         $.ajax({
-            url: this.ServerURL + "API/Message",
+            url: this.ServerURL + "API/Message/" + this.RoomID,
             type: "post",
+            headers: { 'accessToken': this.AccessToken },
             contentType: "application/json",
             data: JSON.stringify(msgObject),
         });

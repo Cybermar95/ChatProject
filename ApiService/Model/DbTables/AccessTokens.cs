@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApiService.Model
 {
-    [Table("AcessTokens")]
-    public class AcessTokens
+    [Table("AccessTokens")]
+    public class AccessTokens
     {
         [Key]
         [Required]
