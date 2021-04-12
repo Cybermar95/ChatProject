@@ -23,17 +23,34 @@ namespace ApiService.WebLayer
         }
 
         [HttpGet("{roomId}")]
-        public ActionResult<IEnumerable<Messages>> GetMessages(int roomID, [FromQuery] int lastMessageID, [FromHeader] string accessToken)
+        public ActionResult<IEnumerable<Messages>> GetNewMessages([FromHeader] string accessToken, int roomID, [FromQuery] int msgID)
         {
                 var checkAccessResult = _accessManager.CheckAccess(roomID, accessToken);
 
                 return  (checkAccessResult is OkResult)
-                        ? _messageService.GetMessages(lastMessageID)
+                        ? _messageService.GetNewMessages(roomID, msgID)
                         : checkAccessResult;
         }
 
+        [HttpGet("{roomId}/history")]
+        public ActionResult<IEnumerable<Messages>> GetOldMessages([FromHeader] string accessToken, int roomID, [FromQuery] int msgID)
+        {
+            var checkAccessResult = _accessManager.CheckAccess(roomID, accessToken);
+
+            return (checkAccessResult is OkResult)
+                    ? _messageService.GetOldMessages(roomID, msgID)
+                    : checkAccessResult;
+        }
+
+
+
+
+
+
+
+
         [HttpPost("{roomId}")]
-        public ActionResult Post(int roomId, [FromBody] MessageFromClient msg, [FromHeader] string accessToken)
+        public ActionResult Post(int roomId, [FromBody] ClientMsg clientMsg, [FromHeader] string accessToken)
         {
             var checkAccessResult = _accessManager.CheckAccess(roomId, accessToken);
 
@@ -41,7 +58,7 @@ namespace ApiService.WebLayer
 
             Messages message = new();
 
-            message.Text = msg.Text;
+            message.Text = clientMsg.Text;
             message.RoomID = roomId;
             message.Date = DateTime.Now;
             message.UserID = _accessManager.GetUserIDByToken(guid).Value;

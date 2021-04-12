@@ -1,8 +1,4 @@
-﻿var ServerURL = "http://localhost:5001/";
-//var ServerURL = "http://188.225.86.132:5001/";
-
-
-function SignUp() {
+﻿function SignUp() {
 
     var userObject = { Name: $("#UserName")[0].value, Password: $("#Password")[0].value }
 
