@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ApiService.Model.Contract
 {
-    public class MessageFromClient
+    public class ClientMsg
     {
         public string Text { get; set; }
     }

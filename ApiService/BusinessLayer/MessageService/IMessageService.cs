@@ -6,8 +6,8 @@ namespace ApiService.BusinessLayer
 {
     public interface IMessageService
     {
-        ActionResult<IEnumerable<Messages>> GetMessages(int id);
-
+        public ActionResult<IEnumerable<Messages>> GetNewMessages(int roomID, int msgId);
+        public ActionResult<IEnumerable<Messages>> GetOldMessages(int roomID, int msgId);
         ActionResult AddMessage(Messages message);
     }
 }

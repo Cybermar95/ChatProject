@@ -24,6 +24,14 @@ namespace ApiService.BusinessLayer
             _dbContext.SaveChanges();
             return _ok;
         }
-        public ActionResult<IEnumerable<Messages>> GetMessages(int id) => new(_dbContext.Messages.Where(msg => msg.ID > id).ToArray());
+        public ActionResult<IEnumerable<Messages>> GetNewMessages(int roomID, int msgId) => new(_dbContext.Messages.Where(msg => msg.RoomID == roomID && msg.ID > msgId)
+                                                                                                                   .ToArray()
+                                                                                               );
+        public ActionResult<IEnumerable<Messages>> GetOldMessages(int roomID, int msgId) 
+            => new(_dbContext.Messages.Where(msg => msg.RoomID == roomID && msg.ID < msgId)                                                                                                                   
+                                      .OrderByDescending(x => x.ID)                                                                                                              
+                                      .Take(50)                                                                                                                  
+                                      .ToArray()                                                                                
+                  );
     }
 }
